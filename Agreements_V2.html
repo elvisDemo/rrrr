@@ -36,11 +36,10 @@ tr:nth-child(even) {
 .dataType{
   color: #7b858e !important;
 }
-.palpable {
-            border: 2px solid red; /* Highlight the target table */
-            animation: highlight 1s infinite;
-        }
 
+		.palpable {
+            background-color: yellow;
+        }
         @keyframes highlight {
             0%, 100% { background-color: yellow; }
             50% { background-color: orange; }
@@ -62,46 +61,60 @@ tr:nth-child(even) {
 
 <body class='bg-light'>
 
-
-	<!-- Link for the table -->
-<a href="#depict_agreement.AgmtDsEnvelope">Go to Table AgmtDsEnvelope</a>
-
-<!-- Table representation -->
-<rect id="depict_agreement&#46;AgmtDsEnvelope" class="entity" style="stroke:#769BB9;" x="656" y="552" width="144" height="64"></rect>
-
-	Search by Table name
-	<div>
-    <input type="text" id="tableSearch" placeholder="Enter table name (e.g., AgmtDsEnvelope)" />
+	<input type="text" id="searchInput" placeholder="Search for table...">
     <button onclick="searchTable()">Search</button>
-</div>
 
+    <script>
+        function searchTable() {
+            var searchInput = document.getElementById('searchInput').value.toLowerCase();
+            var tables = document.getElementsByTagName('table');
+            var found = false;
 
-<script>
-    function searchTable() {
-        // Get the search input value
-        const tableName = document.getElementById('tableSearch').value.trim();
+            for (var i = 0; i < tables.length; i++) {
+                var table = tables[i];
+                if (table.innerText.toLowerCase().includes(searchInput)) {
+                    window.scrollTo(0, table.offsetTop);
+                    var nodes = document.getElementsByClassName('palpable');
+                    for (var j = 0; j < nodes.length; j++) {
+                        nodes[j].classList.remove('palpable');
+                    }
+                    table.classList.add('palpable');
+                    found = true;
+                    break;
+                }
+            }
 
-        // Convert table name to ID format used in your HTML
-        const targetId = `depict_${tableName.replace('.', '&#46;')}`;
-
-        // Find the target element
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-            // Remove highlight from all elements
-            document.querySelectorAll('.entity').forEach(el => el.classList.remove('highlight'));
-
-            // Highlight the target element
-            targetElement.classList.add('highlight');
-
-            // Scroll to the element
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-            alert('Table not found!');
+            if (!found) {
+                alert('Table not found');
+            }
         }
-    }
-</script>
+    </script>
 
+    <div class='container-fluid' style='text-align: center;'>
+
+        <a name='layout1' style='position:sticky; top:0;'/><h4>Agreements_V2</h4>
+        <div class='svgContainer'>
+            <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='1888' height='1966' viewBox='0 0 1888 1966'>
+                <script type='text/ecmascript'>
+                <![CDATA[
+                function hghl(el) { for ( var i in el ){ var elem = document.getElementById(el[i]); if ( elem != null ) elem.setAttribute('class','highlight');  }  }
+                function uhghl(el) { for ( var i in el ){ var elem = document.getElementById(el[i]); if ( elem != null ) elem.setAttribute('class','unhighlight'); }  } 
+                ]]>
+                </script>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Example tables for testing -->
+    <table id="table1" class="palpable">
+        <tr><td>Table 1</td></tr>
+    </table>
+    <table id="table2">
+        <tr><td>Table 2</td></tr>
+    </table>
+    <table id="table3">
+        <tr><td>Table 3</td></tr>
+    </table>
 
 <div class='container-fluid' style='text-align: center;'>
 
